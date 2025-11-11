@@ -54,7 +54,7 @@ This app includes elegant UI animations, real-time authentication, and smooth tr
 2. **Navigate into the project**
    
    cd login_signup
-3. **Install dependencies**
+##  **Install dependencies**
    flutter pub get
-4.**Then**
+## **Then**
    flutter run
