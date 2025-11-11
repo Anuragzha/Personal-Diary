@@ -39,7 +39,7 @@ This app includes elegant UI animations, real-time authentication, and smooth tr
 
 | Home Page | Firebase Integration |
 |------------|---------------------|
-| ![Home](assets/Screenshot/3.png) | ![Firebase](assets/Screenshot/4.png) |
+| ![Home](assets/Screenshot/3.png) | ![Dairy Writing](assets/Screenshot/4.png) |
 
 ---
 
