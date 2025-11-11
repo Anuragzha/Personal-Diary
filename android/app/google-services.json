@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "270607569723",
+    "project_id": "personal-diaries-8acf3",
+    "storage_bucket": "personal-diaries-8acf3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270607569723:android:392d25afc5d04526461d1e",
+        "android_client_info": {
+          "package_name": "com.example.login_signup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa9J0G6hGDgQK52oLzgcJr-bc6voMQ_7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
