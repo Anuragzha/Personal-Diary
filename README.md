@@ -47,7 +47,8 @@ This app includes elegant UI animations, real-time authentication, and smooth tr
 
 1. **Clone this repository**
    
-   git clone https://github.com/Anuragzha/login_signup.git
+   git clone https://github.com/Anuragzha/Personal-Diary
+
 
 ## Next
 2. **Navigate into the project**
