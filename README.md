@@ -1,4 +1,4 @@
-#  Login & Signup my personal diary App
+#  My personal diary App
 
 A modern and animated **Login & Signup Flutter application** with Firebase integration and custom launcher icons.  
 This app includes elegant UI animations, real-time authentication, and smooth transitions for a delightful user experience.
