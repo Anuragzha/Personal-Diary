@@ -41,7 +41,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'Your API Key',
+    apiKey: 'you should use your API Key',
     appId: 'Your App ID',
     messagingSenderId: 'Your ID',
     projectId: 'Your Firebase Console Project Path',
