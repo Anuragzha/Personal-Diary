@@ -41,48 +41,48 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBOte_KhCDNqi0bYboEo52k8kXwy5CgFnE',
-    appId: '1:270607569723:web:eee5e8fd12b07ee7461d1e',
-    messagingSenderId: '270607569723',
-    projectId: 'personal-diaries-8acf3',
-    authDomain: 'personal-diaries-8acf3.firebaseapp.com',
-    storageBucket: 'personal-diaries-8acf3.firebasestorage.app',
-    measurementId: 'G-GQGZ6GLBBQ',
+    apiKey: 'Your API Key',
+    appId: 'Your App ID',
+    messagingSenderId: 'Your ID',
+    projectId: 'Your Firebase Console Project Path',
+    authDomain: 'yourauthdomain',
+    storageBucket: 'your storage',
+    measurementId: 'your id',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCa9J0G6hGDgQK52oLzgcJr-bc6voMQ_7U',
-    appId: '1:270607569723:android:392d25afc5d04526461d1e',
-    messagingSenderId: '270607569723',
-    projectId: 'personal-diaries-8acf3',
-    storageBucket: 'personal-diaries-8acf3.firebasestorage.app',
+    apiKey: 'your api key',
+    appId: 'your app id',
+    messagingSenderId: 'your IDs',
+    projectId: 'your firebases project path',
+    storageBucket: 'your storagebucket',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDBeIZMtbQDsU5hTLfW5StQ26Uf1peDcUI',
-    appId: '1:270607569723:ios:cb890f24afac5feb461d1e',
-    messagingSenderId: '270607569723',
-    projectId: 'personal-diaries-8acf3',
-    storageBucket: 'personal-diaries-8acf3.firebasestorage.app',
-    iosBundleId: 'com.example.loginSignup',
+    apiKey: 'your API KEY',
+    appId: 'Your App Key',
+    messagingSenderId: 'Your IDs',
+    projectId: 'Your Firebase Project',
+    storageBucket: 'Your Blahhh blahhh',
+    iosBundleId: 'Blah Blahhhh',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDBeIZMtbQDsU5hTLfW5StQ26Uf1peDcUI',
-    appId: '1:270607569723:ios:cb890f24afac5feb461d1e',
-    messagingSenderId: '270607569723',
-    projectId: 'personal-diaries-8acf3',
-    storageBucket: 'personal-diaries-8acf3.firebasestorage.app',
-    iosBundleId: 'com.example.loginSignup',
+    apiKey: 'Similarly same',
+    appId: 'similarly same',
+    messagingSenderId: 'same ids',
+    projectId: 'same ids',
+    storageBucket: 'ids',
+    iosBundleId: 'ids',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBOte_KhCDNqi0bYboEo52k8kXwy5CgFnE',
-    appId: '1:270607569723:web:bfc67515a40a6645461d1e',
-    messagingSenderId: '270607569723',
-    projectId: 'personal-diaries-8acf3',
-    authDomain: 'personal-diaries-8acf3.firebaseapp.com',
-    storageBucket: 'personal-diaries-8acf3.firebasestorage.app',
-    measurementId: 'G-JMMCSGH41Q',
+    apiKey: 'haha i am bored',
+    appId: 'ENjoy',
+    messagingSenderId: 'Dont look this',
+    projectId: 'this is not good brother',
+    authDomain: 'haha',
+    storageBucket: 'Hello',
+    measurementId: 'ABCD',
   );
 }
