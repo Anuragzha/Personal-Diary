@@ -7,7 +7,7 @@ This app includes elegant UI animations, real-time authentication, and smooth tr
 
 ##  Features
 
--  Beautiful animated UI (built with `animate_do`)
+-  Beautiful animated UI
 -  Firebase Authentication (Login / Signup)
 -  Firestore database integration
 -  Google Sign-In support
@@ -54,7 +54,11 @@ This app includes elegant UI animations, real-time authentication, and smooth tr
 2. **Navigate into the project**
    
    cd login_signup
+
+   
 ##  **Install dependencies**
    flutter pub get
+
+   
 ## **Then**
    flutter run
