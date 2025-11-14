@@ -1,3 +1,6 @@
+// home.dart
+// Updated: adds view, edit and delete actions while keeping your layout.
+
 import 'dart:async';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'add_entry.dart';
 import 'live_clock.dart';
-import 'footer_widget.dart'; // <--- NEW IMPORT
+import 'footer_widget.dart';
+import 'entry_details.dart'; // NEW
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,7 +36,53 @@ class _HomePageState extends State<HomePage> {
     await auth.signOut();
   }
 
-  // NOTE: The _buildFooter method has been removed from here!
+  Future<void> _confirmAndDelete(String docId) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete entry'),
+        content: const Text(
+          'Are you sure you want to permanently delete this entry?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      try {
+        final user = auth.currentUser;
+        if (user != null) {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .collection('entries')
+              .doc(docId)
+              .delete();
+
+          if (mounted) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('Entry deleted')));
+          }
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Failed to delete entry: $e')));
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,8 +175,8 @@ class _HomePageState extends State<HomePage> {
                         return ListView.builder(
                           itemCount: docs.length,
                           itemBuilder: (context, index) {
-                            final data =
-                                docs[index].data() as Map<String, dynamic>;
+                            final doc = docs[index];
+                            final data = doc.data() as Map<String, dynamic>;
                             final timestamp = (data['timestamp'] as Timestamp?)
                                 ?.toDate();
                             final formattedTime = timestamp != null
@@ -134,6 +184,7 @@ class _HomePageState extends State<HomePage> {
                                     'EEE, dd MMM yyyy – hh:mm a',
                                   ).format(timestamp)
                                 : 'No Date';
+
                             return Card(
                               color: Colors.white.withOpacity(0.15),
                               shape: RoundedRectangleBorder(
@@ -157,6 +208,51 @@ class _HomePageState extends State<HomePage> {
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
+
+                                // -------- When user taps the entry: open full view -----
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          EntryDetailsPage(entryId: doc.id),
+                                    ),
+                                  );
+                                },
+
+                                // -------- Icons: Edit & Delete -----------
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        color: Colors.white70,
+                                      ),
+                                      onPressed: () {
+                                        // Navigate to AddEntryPage in edit mode.
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => AddEntryPage(
+                                              entryId: doc.id,
+                                              oldTitle: data['title'] ?? '',
+                                              oldContent: data['content'] ?? '',
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.redAccent,
+                                      ),
+                                      onPressed: () =>
+                                          _confirmAndDelete(doc.id),
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },
@@ -166,7 +262,7 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                   // Use the FooterWidget component
-                  const FooterWidget(), // <--NEW WIDGET CALL
+                  const FooterWidget(),
                 ],
               ),
             ),
