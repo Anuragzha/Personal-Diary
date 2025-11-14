@@ -166,7 +166,7 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                   // Use the FooterWidget component
-                  const FooterWidget(), // <--- NEW WIDGET CALL
+                  const FooterWidget(), // <--NEW WIDGET CALL
                 ],
               ),
             ),
