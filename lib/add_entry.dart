@@ -1,9 +1,14 @@
+// add_entry.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AddEntryPage extends StatefulWidget {
-  const AddEntryPage({super.key});
+  final String? entryId; // null => create new
+  final String? oldTitle;
+  final String? oldContent;
+
+  const AddEntryPage({super.key, this.entryId, this.oldTitle, this.oldContent});
 
   @override
   State<AddEntryPage> createState() => _AddEntryPageState();
@@ -13,6 +18,17 @@ class _AddEntryPageState extends State<AddEntryPage> {
   final titleController = TextEditingController();
   final contentController = TextEditingController();
   final auth = FirebaseAuth.instance;
+  bool _isSaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // If editing, prefill values (keeps behavior identical for new entry)
+    if (widget.entryId != null) {
+      titleController.text = widget.oldTitle ?? '';
+      contentController.text = widget.oldContent ?? '';
+    }
+  }
 
   @override
   void dispose() {
@@ -21,7 +37,7 @@ class _AddEntryPageState extends State<AddEntryPage> {
     super.dispose();
   }
 
-  void _saveEntry() async {
+  Future<void> _saveEntry() async {
     final user = auth.currentUser;
     if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -40,34 +56,63 @@ class _AddEntryPageState extends State<AddEntryPage> {
       return;
     }
 
+    setState(() => _isSaving = true);
+
     try {
-      await FirebaseFirestore.instance
+      final coll = FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
-          .collection('entries')
-          .add({
-            'title': titleController.text.trim(),
-            'content': contentController.text.trim(),
-            'timestamp': Timestamp.now(),
-          });
+          .collection('entries');
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Entry Saved Successfully!')),
-      );
+      if (widget.entryId == null) {
+        // add new
+        await coll.add({
+          'title': titleController.text.trim(),
+          'content': contentController.text.trim(),
+          'timestamp': Timestamp.now(),
+        });
 
-      Navigator.pop(context);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Entry Saved Successfully!')),
+          );
+        }
+      } else {
+        // update existing
+        await coll.doc(widget.entryId).update({
+          'title': titleController.text.trim(),
+          'content': contentController.text.trim(),
+          // keep timestamp as-is or optionally update to edit time:
+          'editedTimestamp': Timestamp.now(),
+        });
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Entry Updated Successfully!')),
+          );
+        }
+      }
+
+      // pop back to previous screen (home or details)
+      if (mounted) Navigator.pop(context);
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Failed to save entry: $e')));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to save entry: $e')));
+      }
+    } finally {
+      if (mounted) setState(() => _isSaving = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isEditing = widget.entryId != null;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Entry'),
+        title: Text(isEditing ? 'Edit Entry' : 'New Entry'),
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
       ),
@@ -88,8 +133,7 @@ class _AddEntryPageState extends State<AddEntryPage> {
                 controller: contentController,
                 maxLines: null,
                 expands: true,
-                textAlignVertical:
-                    TextAlignVertical.top, // Start text at the top
+                textAlignVertical: TextAlignVertical.top,
                 decoration: const InputDecoration(
                   labelText: 'Write your thoughts...',
                   border: OutlineInputBorder(),
@@ -99,9 +143,18 @@ class _AddEntryPageState extends State<AddEntryPage> {
             ),
             const SizedBox(height: 12),
             ElevatedButton.icon(
-              onPressed: _saveEntry,
-              icon: const Icon(Icons.save),
-              label: const Text('Save Entry'),
+              onPressed: _isSaving ? null : _saveEntry,
+              icon: _isSaving
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Icon(Icons.save),
+              label: Text(isEditing ? 'Update Entry' : 'Save Entry'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blueAccent,
                 foregroundColor: Colors.white,
